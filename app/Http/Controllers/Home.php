@@ -8,6 +8,7 @@ use Abraham\TwitterOAuth\TwitterOAuth;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class Home extends Controller
 {
@@ -32,7 +33,7 @@ class Home extends Controller
          *when it comes back, you decrypt and get authtokensecret back
          */
 
-        $tempId = str_random(40);
+        $tempId = Str::random(40);
 
         $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB");
         $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback?user='.$tempId));
