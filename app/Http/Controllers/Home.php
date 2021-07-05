@@ -27,24 +27,25 @@ class Home extends Controller
 
     public function index()
     {
-        $tempId = bin2hex(random_bytes(10));
+        /**
+         * encrypt auth_token_secret and send out as tempId
+         *when it comes back, you decrypt and get authtokensecret back
+         */
 
         $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB");
-        $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback?user='.$tempId));
+        $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback'));
 
-        //$this->encrypt($requestToken['oauth_token_secret']);
-        Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
+        $tempId = $this->encrypt($requestToken['oauth_token_secret']);
+        //Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
 
-        return $url;
+        return $url.'?user='.$tempId;
     }
 
     public function callb(Request $request)
     {
-        $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, Cache::get($request->user));
-        echo "<pre>";
-        var_dump(Cache::get($request->user));
-        echo "</pre>";
+        $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, $this->decrypt($request->user));
+
         $access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $request->oauth_verifier]);
 
         $connection = new TwitterOAuth(config('services.twitter.client_id'), config('services.twitter.client_secret'), $access_token['oauth_token'], $access_token['oauth_token_secret']);
