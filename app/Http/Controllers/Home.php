@@ -22,7 +22,7 @@ class Home extends Controller
 
     public function __construct()
     {
-        echo $this->iv_length = openssl_cipher_iv_length(self::Cypher);
+        $this->iv_length = openssl_cipher_iv_length(self::Cypher);
     }
 
     public function index()
