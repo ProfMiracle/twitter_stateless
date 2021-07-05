@@ -36,7 +36,7 @@ class Home extends Controller
         $tempId = Str::random(40);
 
         $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB");
-        $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback?user='.$tempId));
+        $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback/?user='.$tempId));
 
         //$tempId = $this->encrypt($requestToken['oauth_token_secret']);
         Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
