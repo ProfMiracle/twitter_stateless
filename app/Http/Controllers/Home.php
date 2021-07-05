@@ -11,6 +11,20 @@ use Illuminate\Http\Request;
 
 class Home extends Controller
 {
+    const mIV = "BuyamBeerBot";
+    const mKEY = "This is a Key";
+    const Cypher = "AES-128-CTR";
+    const Options = 0;
+    /**
+     * @var false|int
+     */
+    private $iv_length;
+
+    public function __construct()
+    {
+        $this->iv_length = openssl_cipher_iv_length(self::Cypher);
+    }
+
     public function index()
     {
         $tempId = bin2hex(random_bytes(40));
@@ -18,7 +32,11 @@ class Home extends Controller
         $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB");
         $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback?user='.$tempId));
 
-        Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
+        echo "<pre>";
+        var_dump($requestToken['oauth_token_secret']);
+        echo "</pre>";
+        $this->encrypt($requestToken['oauth_token_secret']);
+        //Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
 
         return $url;
@@ -26,7 +44,7 @@ class Home extends Controller
 
     public function callb(Request $request)
     {
-        $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, Cache::get($request->user));
+        $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, $this->decrypt($request->user));
         echo "<pre>";
         var_dump(Cache::get($request->user));
         echo "</pre>";
@@ -38,5 +56,17 @@ class Home extends Controller
         echo "<pre>";
         var_dump($content);
         echo "</pre>";
+    }
+
+    private function encrypt($string)
+    {
+        return openssl_encrypt($string, self::Cypher,
+            self::mKEY, self::Options, self::mIV);
+    }
+
+    private function decrypt($string)
+    {
+        return openssl_decrypt ($string, self::Cypher,
+            self::mKEY, self::Options, self::mIV);
     }
 }
