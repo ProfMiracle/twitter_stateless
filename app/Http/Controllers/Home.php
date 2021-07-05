@@ -24,8 +24,14 @@ class Home extends Controller
 
     public function callb(Request $request)
     {
+        $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, Cache::get($request->user));
+        $access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $request->oauth_verifier]);
+
+        $connection = new TwitterOAuth(config('services.twitter.client_id'), config('services.twitter.client_secret'), $access_token['oauth_token'], $access_token['oauth_token_secret']);
+        $content = $connection->get("account/verify_credentials");
+
         echo "<pre>";
-        var_dump($_REQUEST);
+        var_dump($content);
         echo "</pre>";
     }
 }
