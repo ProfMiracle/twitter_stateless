@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-use GuzzleHttp\Psr7\Request;
+
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Request;
 
 class Home extends Controller
 {
