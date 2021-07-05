@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class Home extends Controller
 {
