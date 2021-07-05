@@ -35,6 +35,7 @@ class Home extends Controller
         echo "<pre>";
         var_dump($requestToken['oauth_token_secret']);
         echo "</pre>";
+        exit();
         $this->encrypt($requestToken['oauth_token_secret']);
         //Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
