@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class Home extends Controller
 {
-    const mIV = "BuyamBeerBot";
+    const mIV = "BuyamBeerBot1234";
     const mKEY = "This is a Key";
     const Cypher = "AES-128-CTR";
     const Options = 0;
