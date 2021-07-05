@@ -45,6 +45,7 @@ class Home extends Controller
     public function callb(Request $request)
     {
         echo $this->decrypt($request->user);
+        exit();
         $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, $this->decrypt($request->user));
 
         $access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $request->oauth_verifier]);
