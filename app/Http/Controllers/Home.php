@@ -20,6 +20,7 @@ class Home extends Controller
 
         Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
+        print function_exists('curl_exec') ? 'curl_exec is enabled' : 'curl_exec is disabled';
         return $url;
     }
 
