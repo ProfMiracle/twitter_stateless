@@ -21,4 +21,11 @@ class Home extends Controller
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
         return $url;
     }
+
+    public function callb(Request $request)
+    {
+        echo "<pre>";
+        var_dump($_REQUEST);
+        echo "</pre>";
+    }
 }

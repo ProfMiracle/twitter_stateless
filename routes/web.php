@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\Home::class, 'index']);
+Route::get('/callback', [\App\Http\Controllers\Home::class, 'callb']);
