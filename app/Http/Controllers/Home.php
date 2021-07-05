@@ -36,7 +36,7 @@ class Home extends Controller
         $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback'));
 
         $tempId = $this->encrypt($requestToken['oauth_token_secret']);
-        //Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
+
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
 
         return $url.'&user='.$tempId;
@@ -44,6 +44,7 @@ class Home extends Controller
 
     public function callb(Request $request)
     {
+        echo $this->decrypt($request->user);
         $connection = new TwitterOAuth("Fj1skBBtAUuvuuYHJE0c3vDcK", "uHaXF3uF7e4tQ3FkVOfYf7uetPZp8xUERWguZ5WRqnSET7i1BB", $request->oauth_token, $this->decrypt($request->user));
 
         $access_token = $connection->oauth("oauth/access_token", ["oauth_verifier" => $request->oauth_verifier]);
