@@ -39,7 +39,7 @@ class Home extends Controller
         //Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
 
-        return $url.'?user='.$tempId;
+        return $url.'&user='.$tempId;
     }
 
     public function callb(Request $request)
