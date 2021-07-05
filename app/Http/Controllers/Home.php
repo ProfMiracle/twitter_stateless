@@ -23,7 +23,7 @@ class Home extends Controller
 
     public function __construct()
     {
-        $this->iv_length = openssl_cipher_iv_length(self::Cypher);
+        //$this->iv_length = openssl_cipher_iv_length(self::Cypher);
     }
 
     public function index()
@@ -39,7 +39,7 @@ class Home extends Controller
         $requestToken = $connection->oauth('oauth/request_token', array('oauth_callback' => 'https://twitter-stateless.herokuapp.com/callback?user='.$tempId));
 
         //$tempId = $this->encrypt($requestToken['oauth_token_secret']);
-        Cache::put($tempId, $requestToken['oauth_token_secret'], 1);
+        Cache::put($tempId, $requestToken['oauth_token_secret'], 100000);
 
         $url = $connection->url('oauth/authorize', array('oauth_token' => $requestToken['oauth_token']));
 
